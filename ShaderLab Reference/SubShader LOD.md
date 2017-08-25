@@ -1,0 +1,1 @@
+* [Level of Detail](https://docs.unity3d.com/Manual/SL-ShaderLOD.html)
