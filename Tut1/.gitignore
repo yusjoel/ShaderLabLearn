@@ -1,0 +1,7 @@
+/DontCommit
+/.vs
+/_ReSharper.Caches
+/Library
+/Temp
+*.csproj
+*.sln

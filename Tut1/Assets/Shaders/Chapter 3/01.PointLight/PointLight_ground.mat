@@ -83,4 +83,4 @@ Material:
     - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LightColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
-    - _LightPosition: {r: -0.33, g: 0.5, b: 0, a: 1}
+    - _LightPosition: {r: -1.5, g: 1, b: 0, a: 1}
