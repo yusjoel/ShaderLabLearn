@@ -11,10 +11,12 @@
 		_ConeAngle ("Cone Angle", Float) = 30
 		_LightFalloff ("Light Falloff", Float) = 20
 	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
+
 		Pass
 		{
 			CGPROGRAM
@@ -59,7 +61,6 @@
 
 				return output;
 			}
-
 
 			float4 PixelShaderFunction(VertexShaderOutput input) : SV_Target
 			{

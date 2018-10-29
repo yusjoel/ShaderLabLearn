@@ -1,17 +1,20 @@
-﻿Shader "3D Graphics with XNA Games Studio 4.0/Chapter 2/UnityLight/06.LambertianDirectionalLighting"
+﻿Shader "3D Graphics with XNA Games Studio 4.0/Chapter 2/Unity/06.LambertianDirectionalLighting"
 {
 	Properties
 	{
 		_BasicTexture ("Texture", 2D) = "white" {}
 		_DiffuseColor ("Diffuse Color", Color) = (1.0, 1.0, 1.0, 1.0)
 	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
+
 		Pass
 		{
 			Tags { "LightMode" = "ForwardBase"}
+
 			CGPROGRAM
 			#pragma vertex VertexShaderFunction
 			#pragma fragment PixelShaderFunction
@@ -45,7 +48,6 @@
 				output.Normal = mul(input.Normal, (float3x3)unity_WorldToObject);
 				return output;
 			}
-
 
 			float4 PixelShaderFunction(VertexShaderOutput input) : SV_Target
 			{
@@ -68,6 +70,7 @@
 		{
 			Tags { "LightMode" = "ForwardAdd"}
 			Blend One One
+
 			CGPROGRAM
 			#pragma vertex VertexShaderFunction
 			#pragma fragment PixelShaderFunction
@@ -101,7 +104,6 @@
 				output.Normal = mul(input.Normal, (float3x3)unity_WorldToObject);
 				return output;
 			}
-
 
 			float4 PixelShaderFunction(VertexShaderOutput input) : SV_Target
 			{

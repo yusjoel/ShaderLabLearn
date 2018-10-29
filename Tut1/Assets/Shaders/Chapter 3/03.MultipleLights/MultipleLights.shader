@@ -15,10 +15,12 @@
 		_SpecularColor ("Specular Color", Color) = (1, 1, 1)
 		_CameraPosition ("Camera Position", Vector) = (1, 1, 1)
 	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
+
 		Pass
 		{
 			CGPROGRAM
@@ -69,7 +71,6 @@
 				return output;
 			}
 
-
 			float4 PixelShaderFunction(VertexShaderOutput input) : SV_Target
 			{
 				float4 color = _DiffuseColor;
@@ -93,7 +94,6 @@
 					// Add specular highlights
 					lighting += pow(saturate(dot(refl, view)), _SpecularPower) * _SpecularColor;
 				}
-
 
 				// Calculate final color
 				float4 output = saturate(lighting) * color;

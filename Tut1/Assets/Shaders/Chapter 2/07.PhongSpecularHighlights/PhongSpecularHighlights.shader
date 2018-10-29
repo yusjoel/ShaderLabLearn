@@ -11,10 +11,12 @@
 		_SpecularColor ("Specular Color", Color) = (1, 1, 1)
 		_CameraPosition ("Camera Position", Vector) = (1, 1, 1)
 	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
+
 		Pass
 		{
 			CGPROGRAM
@@ -58,7 +60,6 @@
 				output.ViewDirection = worldPosition - _CameraPosition;
 				return output;
 			}
-
 
 			float4 PixelShaderFunction(VertexShaderOutput input) : SV_Target
 			{

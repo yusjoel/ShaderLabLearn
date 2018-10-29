@@ -10,10 +10,12 @@
 		_LightAttenuation ("Light Attenuation", Float) = 5000
 		_LightFalloff ("Light Falloff", Float) = 2
 	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
+
 		Pass
 		{
 			CGPROGRAM
@@ -57,7 +59,6 @@
 
 				return output;
 			}
-
 
 			float4 PixelShaderFunction(VertexShaderOutput input) : SV_Target
 			{

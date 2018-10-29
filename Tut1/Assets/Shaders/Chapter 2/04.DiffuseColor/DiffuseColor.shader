@@ -36,7 +36,7 @@ Shader "3D Graphics with XNA Games Studio 4.0/Chapter 2/04.DiffuseColor"
 			}
 
 
-			float4 PixelShaderFunction () : SV_Target
+			float4 PixelShaderFunction() : SV_Target
 			{
 				return _DiffuseColor;
 			}

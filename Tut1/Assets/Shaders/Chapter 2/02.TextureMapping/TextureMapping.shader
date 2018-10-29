@@ -4,6 +4,7 @@
 	{
 		_BasicTexture ("Texture", 2D) = "white" {}
 	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
@@ -40,7 +41,7 @@
 				return output;
 			}
 			
-			fixed4 PixelShaderFunction (VertexShaderOutput input) : SV_Target
+			fixed4 PixelShaderFunction(VertexShaderOutput input) : SV_Target
 			{
 				fixed4 output = tex2D(_BasicTexture, input.UV);
 				return output;

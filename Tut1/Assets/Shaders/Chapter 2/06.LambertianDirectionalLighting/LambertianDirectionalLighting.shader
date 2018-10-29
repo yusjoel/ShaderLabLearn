@@ -8,10 +8,12 @@
 		_LightDirection ("Light Direction", Vector) = (1, 1, 1)
 		_LightColor ("Light Color", Color) = (0.9, 0.9, 0.9, 1.0)
 	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
+
 		Pass
 		{
 			CGPROGRAM
