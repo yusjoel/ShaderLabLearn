@@ -5,3 +5,6 @@
 /Temp
 *.csproj
 *.sln
+/.uce
+/Assets/uCodeEditor
+/Assets/uCodeEditor.meta
