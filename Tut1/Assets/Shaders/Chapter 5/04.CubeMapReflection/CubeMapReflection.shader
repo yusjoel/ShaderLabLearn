@@ -37,8 +37,13 @@
 			{
 				VertexShaderOutput output;
 				output.Position = UnityObjectToClipPos(input.Position);
+				// output.Normal = UnityObjectToWorldNormal(input.Normal);
 				output.Normal = mul(input.Normal, (float3x3)unity_WorldToObject);
+				// calculte reflection in vertex
+				// float3 viewDirection = UnityWorldSpaceViewDir(worldPosition);
+				// output.Reflection = reflect(-viewDirection, output.Normal);
 				output.WorldPosition = mul(unity_ObjectToWorld, input.Position).xyz;
+
 				return output;
 			}
 

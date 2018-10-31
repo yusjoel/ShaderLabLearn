@@ -3,6 +3,7 @@
 /_ReSharper.Caches
 /Library
 /Temp
+/obj
 *.csproj
 *.sln
 /.uce
