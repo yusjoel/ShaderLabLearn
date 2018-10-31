@@ -10,7 +10,7 @@
 		_SpecularPower ("Specular Power", Float) = 32
 		_SpecularColor ("Specular Color", Color) = (1, 1, 1)
 		_CameraPosition ("Camera Position", Vector) = (1, 1, 1)
-		_NormalMap("Normal Map", Cube) = "white" {}
+		_NormalMap("Normal Map", 2D) = "white" {}
 	}
 
 	SubShader
