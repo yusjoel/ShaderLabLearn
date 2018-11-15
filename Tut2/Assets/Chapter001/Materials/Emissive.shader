@@ -1,4 +1,4 @@
-﻿Shader "CookbookShaders/Emissive"
+﻿Shader "CookbookShaders/Chapter001/Emissive"
 {
     Properties
     {
