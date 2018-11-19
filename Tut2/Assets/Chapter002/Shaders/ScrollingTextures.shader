@@ -1,4 +1,4 @@
-﻿Shader "Unlit/NewUnlitShader"
+﻿Shader "CookbookShaders/Chapter002/NewUnlitShader"
 {
 	Properties
 	{
@@ -25,11 +25,7 @@
 
 		void surf(Input IN, inout SurfaceOutput o) 
 		{
-			fixed2 uv = IN.uv_MainTex;
-			fixed x = _XSpeed * _Time;
-			fixed y = _YSpeed * _Time;
-			uv += fixed2(x, y);
-
+			fixed2 uv = IN.uv_MainTex + fixed2(_XSpeed, _YSpeed) * _Time.x;
 			half4 c = tex2D(_MainTex, uv);
 			o.Albedo = c.rgb;
 			o.Alpha = c.a;
