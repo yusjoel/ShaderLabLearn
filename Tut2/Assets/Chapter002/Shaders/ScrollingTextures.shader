@@ -1,4 +1,4 @@
-﻿Shader "CookbookShaders/Chapter002/NewUnlitShader"
+﻿Shader "CookbookShaders/Chapter002/ScrollingTextures"
 {
 	Properties
 	{

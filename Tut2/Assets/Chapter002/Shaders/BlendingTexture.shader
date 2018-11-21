@@ -1,4 +1,4 @@
-﻿Shader "Custom/BlendingTexture"
+﻿Shader "CookbookShaders/Chapter002/BlendingTexture"
 {
     Properties
     {
