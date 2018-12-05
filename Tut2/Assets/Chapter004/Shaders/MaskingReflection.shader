@@ -1,4 +1,4 @@
-﻿Shader "CookbookShaders/Chapter004/CubemapReflection"
+﻿Shader "CookbookShaders/Chapter004/MaskingReflection"
 {
     Properties
     {
@@ -6,6 +6,7 @@
         _MainTex ("Albedo (RGB)", 2D) = "white" { }
         _Cubemap ("Cubemap", CUBE) = "Skybox" { }
         _ReflAmount ("Reflection Amount", Range(0.01, 1)) = 0.5
+        _ReflMask ("Reflection Mask", 2D) = "" { }
     }
 
     SubShader
@@ -21,6 +22,7 @@
         sampler2D _MainTex;
         samplerCUBE _Cubemap;
         float _ReflAmount;
+        sampler2D _ReflMask;
 
         struct Input
         {
@@ -32,9 +34,12 @@
         {
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+            float3 reflection = texCUBE(_Cubemap, IN.worldRefl).rgb;
+            float4 reflMask = tex2D(_ReflMask, IN.uv_MainTex);
+
             o.Albedo = c.rgb;
             o.Alpha = c.a;
-            o.Emission = texCUBE(_Cubemap, IN.worldRefl).rgb * _ReflAmount;
+            o.Emission = (reflection * reflMask) * _ReflAmount;
         }
         ENDCG
         
