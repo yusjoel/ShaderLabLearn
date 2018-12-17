@@ -1,0 +1,15 @@
+# Unity3D
+/Library
+/Temp
+/obj
+
+# Visual Studio
+/.vs
+/_ReSharper.Caches
+*.csproj
+*.sln
+
+# uCodeEditor
+/.uce
+/Assets/uCodeEditor
+/Assets/uCodeEditor.meta
