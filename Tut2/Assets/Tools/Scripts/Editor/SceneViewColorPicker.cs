@@ -125,7 +125,11 @@ namespace Tools.Editor
             // 获取的截图不包含头部, 但是和上面计算的值差一个像素
             Capture(viewportWidth, viewportHeight, "d:\\Viewport.png");
             // 只能获取GameView的截图
+#if UNITY_2017_1_OR_NEWER
+            ScreenCapture.CaptureScreenshot("d:\\Screenshot.png");
+#else
             Application.CaptureScreenshot("d:\\Screenshot.png");
+#endif
         }
 
         /// <summary>
@@ -144,7 +148,7 @@ namespace Tools.Editor
             }
             else
             {
-                if (e.type == EventType.mouseDown && e.button == 0)
+                if (e.type == EventType.MouseDown && e.button == 0)
                     PickColor(sceneView, e.mousePosition);
             }
 
