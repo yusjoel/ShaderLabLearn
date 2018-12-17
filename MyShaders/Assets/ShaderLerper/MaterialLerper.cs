@@ -124,7 +124,7 @@ public class MaterialLerper : MonoBehaviour
     /// </summary>
     private void Initialize()
     {
-        if (Renderers == null)
+        if (Renderers == null || Renderers.Length == 0)
             return;
 
         if (endMaterial == null)
@@ -174,7 +174,11 @@ public class MaterialLerper : MonoBehaviour
             instanceLerper.SetFloat("_LerpTime", time);
 
             if (time > Duration)
+            {
                 isPlaying = false;
+                foreach (var r in Renderers)
+                    r.sharedMaterial = endMaterial;
+            }
         }
     }
 }
