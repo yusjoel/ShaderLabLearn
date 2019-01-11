@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Luminance
-  m_Shader: {fileID: 4800000, guid: 5194fcc47ebf62847b8c5516e18658b5, type: 3}
+  m_Name: OldFilm
+  m_Shader: {fileID: 4800000, guid: 8af88cc9a92e42043a5d39d790c15f3b, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -22,6 +22,5 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _LuminosityAmount: 0.73
+    m_Floats: []
     m_Colors: []

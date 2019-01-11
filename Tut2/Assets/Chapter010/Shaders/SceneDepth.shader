@@ -2,8 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Base (RGB)", 2D) = "white" {}    
-        _DepthPower ("Depth Power", Range(0, 5)) = 1
+        _MainTex ("Base (RGB)", 2D) = "white" {}
     }
 
     SubShader

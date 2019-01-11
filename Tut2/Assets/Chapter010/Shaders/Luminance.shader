@@ -2,8 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Base (RGB)", 2D) = "white" {}    
-        _LuminosityAmount ("Gray Scale Amount", Range(0, 1)) = 0.5
+        _MainTex ("Base (RGB)", 2D) = "white" {}
     }
 
     SubShader

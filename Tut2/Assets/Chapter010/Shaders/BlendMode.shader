@@ -1,10 +1,8 @@
-﻿Shader "CookbookShaders/Chapter010/BlendMode"
+﻿Shader "CookbookShaders/Chapter011/OldFilm"
 {
     Properties
     {
-        _MainTex ("Base (RGB)", 2D) = "white" {}    
-        _BlendTex ("Blend Texture", 2D) = "white" {}
-        _Opacity ("Blend Opacity", Range(0, 1)) = 1
+        _MainTex ("Base (RGB)", 2D) = "white" {}
     }
 
     SubShader
