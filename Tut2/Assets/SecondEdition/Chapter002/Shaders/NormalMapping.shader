@@ -1,4 +1,4 @@
-﻿Shader "CookbookShaders/Chapter002/NormalMapping"
+﻿Shader "CookbookShaders(2nd Edition)/Chapter002/NormalMapping"
 {
     Properties
     {
