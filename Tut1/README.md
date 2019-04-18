@@ -22,5 +22,5 @@ Unity3D版本: Unity 5.6.5p2
 ### 01.Simple Effect
 最简单的版本, 将模型使用单色描绘出来.
 
-[SimpleEffect](Assets/Shaders/Chapter 2/01.SimpleEffect/README.md)
+* [SimpleEffect](./Assets/Shaders/Chapter 2/01.SimpleEffect/README.md)
  
