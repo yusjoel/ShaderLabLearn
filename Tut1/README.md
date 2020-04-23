@@ -2,6 +2,7 @@
 ## 概述
 * [PACKT](https://www.packtpub.com/game-development/3d-graphics-xna-game-studio-40)
 * [Amazon](https://www.amazon.com/Graphics-XNA-Game-Studio-4-0/dp/1849690049)
+
 这本书主要介绍XNA 4.0环境下如何实现一些3D效果, 主要通过使用着色器(HLSL)来实现.
 
 这里尝试在Unity3D环境下, 使用ShaderLab进行实现.
@@ -22,5 +23,5 @@ Unity3D版本: Unity 5.6.5p2
 ### 01.Simple Effect
 最简单的版本, 将模型使用单色描绘出来.
 
-* [SimpleEffect](./Assets/Shaders/Chapter 2/01.SimpleEffect/README.md)
+[SimpleEffect](Assets/Shaders/Chapter 2/01.SimpleEffect/README.md)
  
