@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gempoll.Editor.Rendering
+namespace Tools.Rendering
 {
     [Serializable]
-    public class ScreenshotInfo
+    public class ScreenShotInfo
     {
         public Vector3 CameraPosition;
         public Vector3 CameraEulerAngles;

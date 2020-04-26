@@ -2,6 +2,7 @@
 /Library
 /Temp
 /obj
+/Logs
 
 # Visual Studio
 /.vs

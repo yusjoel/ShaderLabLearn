@@ -63,7 +63,7 @@ public class ShaderLerperTool
 
         // 创建插值器
         string lerperPrefabPath = directory + "/" + fileName + " Lerper.prefab";
-        PrefabUtility.CreatePrefab(lerperPrefabPath, go);
+        PrefabUtility.SaveAsPrefabAsset(go, lerperPrefabPath);
         Object.DestroyImmediate(go);
 
         // 创建插值版的Shader

@@ -1,16 +1,15 @@
-﻿using Gempoll.Editor.Rendering;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gempoll.Plugins.Rendering
+namespace Tools.Rendering
 {
-    public class ScreenshotData : MonoBehaviour
+    public class ScreenShotData : MonoBehaviour
     {
         public string Name;
 
         public string Description;
 
-        public List<ScreenshotInfo> ScreenshotInfos = new List<ScreenshotInfo>();
+        public List<ScreenShotInfo> ScreenShotInfos = new List<ScreenShotInfo>();
 
         void OnGUI()
         {

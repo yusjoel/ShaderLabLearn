@@ -1,5 +1,4 @@
-﻿using Gempoll.Editor.Rendering;
-using Gempoll.Plugins.Extensions;
+﻿using Extensions;
 using System.Collections;
 using System.IO;
 using System.Linq;
@@ -7,33 +6,35 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Gempoll.Plugins.Rendering.Editor
+namespace Tools.Rendering.Editor
 {
     public class RenderingDebugTool
     {
-        private const string MenuName = "Tools/Rendering Debug Tool";
+        private const string menuName = "Tools/Rendering Debug Tool";
+
         private static RenderingDebugTool instance;
+
+        private ScreenShotData cachedScreenShotData;
 
         /// <summary>
         ///     是否开启拾取
         /// </summary>
         private bool enabled;
 
-        private ScreenshotData cachedScreenshotData;
+        private int screenShotIndex;
 
         private RenderingDebugTool()
         {
             // 这里处理菜单的勾选
             EditorApplication.delayCall += () =>
             {
-                bool savedEnabled = EditorPrefs.GetBool(MenuName, false);
+                bool savedEnabled = EditorPrefs.GetBool(menuName, false);
                 PerformAction(savedEnabled);
             };
         }
 
-
         [InitializeOnLoadMethod]
-        private static void Initialize()
+        public static void Initialize()
         {
             // 编辑器载入时运行
             if (instance != null)
@@ -42,10 +43,8 @@ namespace Gempoll.Plugins.Rendering.Editor
             instance = new RenderingDebugTool();
 
             // 注册OnSceneGUI
-            SceneView.onSceneGUIDelegate += instance.OnScene;
+            SceneView.duringSceneGui += instance.OnScene;
         }
-
-        private int screenshotIndex;
 
         /// <summary>
         ///     SceneView描绘
@@ -56,23 +55,23 @@ namespace Gempoll.Plugins.Rendering.Editor
             if (!enabled)
                 return;
 
-            var screenshotData = GetScreenshotData();
-            if (screenshotData == null)
+            var screenShotData = GetScreenShotData();
+            if (screenShotData == null)
                 return;
 
             Handles.BeginGUI();
             var rect = new Rect(10, 50, 150, 20);
 
             // 预览已保存镜头
-            int screenshotInfosCount = screenshotData.ScreenshotInfos.Count;
-            GUI.Label(rect, string.Format("截屏: {0:D2} / {1:D2}", screenshotIndex, screenshotInfosCount));
+            int screenShotInfosCount = screenShotData.ScreenShotInfos.Count;
+            GUI.Label(rect, $"截屏: {screenShotIndex:D2} / {screenShotInfosCount:D2}");
             rect.y += 20;
 
-            int newScreenshotIndex = (int)GUI.HorizontalSlider(rect, screenshotIndex, 0, screenshotInfosCount);
-            if (newScreenshotIndex != screenshotIndex)
+            int newScreenShotIndex = (int) GUI.HorizontalSlider(rect, screenShotIndex, 0, screenShotInfosCount);
+            if (newScreenShotIndex != screenShotIndex)
             {
-                screenshotIndex = newScreenshotIndex;
-                Show(screenshotData.ScreenshotInfos[screenshotIndex]);
+                screenShotIndex = newScreenShotIndex;
+                Show(screenShotData.ScreenShotInfos[screenShotIndex]);
             }
 
             rect.y += 25;
@@ -110,7 +109,7 @@ namespace Gempoll.Plugins.Rendering.Editor
                 var mainCamera = mainCameraObj.GetComponent<Camera>();
                 var renderers = Object.FindObjectsOfType<Renderer>();
 
-                var screenshotInfo = new ScreenshotInfo
+                var screenShotInfo = new ScreenShotInfo
                 {
                     CameraPosition = mainCamera.transform.position,
                     CameraEulerAngles = mainCamera.transform.eulerAngles,
@@ -120,9 +119,9 @@ namespace Gempoll.Plugins.Rendering.Editor
                     Renderers = renderers.Where(renderer => renderer.enabled).ToList()
                 };
 
-                var material = screenshotInfo.Renderers[0].sharedMaterial;
-                var materialName = material.name;
-                var shaderName = material.shader.name;
+                var material = screenShotInfo.Renderers[0].sharedMaterial;
+                string materialName = material.name;
+                string shaderName = material.shader.name;
 
                 var canvas = GameObject.Find("Canvas");
                 var shaderNameText = canvas.FindComponent<Text>("ShaderName");
@@ -130,42 +129,32 @@ namespace Gempoll.Plugins.Rendering.Editor
                 var materialNameText = canvas.FindComponent<Text>("MaterialName");
                 materialNameText.text = materialName;
 
-                screenshotData.ScreenshotInfos.Add(screenshotInfo);
-                string directory = string.Format("Screenshot/{0}/{1}",
-                    EditorUserBuildSettings.activeBuildTarget,
-                    screenshotData.Name);
+                screenShotData.ScreenShotInfos.Add(screenShotInfo);
+                string directory = $"ScreenShot/{EditorUserBuildSettings.activeBuildTarget}/{screenShotData.Name}";
                 if (!Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
 
-                string path = Path.Combine(directory, string.Format("screenshot_{0:D3}.png", screenshotData.ScreenshotInfos.Count));
+                string path = Path.Combine(directory,
+                    $"screenShot_{screenShotData.ScreenShotInfos.Count:D3}.png");
                 ScreenCapture.CaptureScreenshot(path);
             }
 
             rect.y += 25;
 
-            if (GUI.Button(rect, "重拍所有"))
-            {
-                EditorCoroutine.start(RecaptureAll());
-            }
+            if (GUI.Button(rect, "重拍所有")) EditorCoroutine.Start(RecaptureAll());
 
             rect.y += 25;
 
-            if (GUI.Button(rect, "打开Frame Debugger"))
-            {
-                EditorApplication.ExecuteMenuItem("Window/Frame Debugger");
-            }
+            if (GUI.Button(rect, "打开Frame Debugger")) EditorApplication.ExecuteMenuItem("Window/Frame Debugger");
 
             rect.y += 25;
 
-            if (GUI.Button(rect, "打开Lighting Settings"))
-            {
-                EditorApplication.ExecuteMenuItem("Window/Lighting/Settings");
-            }
+            if (GUI.Button(rect, "打开Lighting Settings")) EditorApplication.ExecuteMenuItem("Window/Lighting/Settings");
 
             Handles.EndGUI();
         }
 
-        private void Show(ScreenshotInfo screenshotInfo)
+        private void Show(ScreenShotInfo screenShotInfo)
         {
             var sceneViewCamera = SceneView.currentDrawingSceneView.camera;
             var mainCameraObj = GameObject.Find("Main Camera");
@@ -174,23 +163,23 @@ namespace Gempoll.Plugins.Rendering.Editor
 
             // 只显示选中部分
             foreach (var renderer in renderers)
-                renderer.enabled = screenshotInfo.Renderers.Contains(renderer);
+                renderer.enabled = screenShotInfo.Renderers.Contains(renderer);
 
             // 设置SceneView镜头
-            sceneViewCamera.transform.position = screenshotInfo.CameraPosition;
-            sceneViewCamera.transform.eulerAngles = screenshotInfo.CameraEulerAngles;
+            sceneViewCamera.transform.position = screenShotInfo.CameraPosition;
+            sceneViewCamera.transform.eulerAngles = screenShotInfo.CameraEulerAngles;
 
             // 设置GameView镜头
-            mainCameraObj.transform.position = screenshotInfo.CameraPosition;
-            mainCameraObj.transform.eulerAngles = screenshotInfo.CameraEulerAngles;
-            mainCamera.fieldOfView = screenshotInfo.CameraFieldOfView;
-            mainCamera.nearClipPlane = screenshotInfo.CameraNearClipPlane;
-            mainCamera.farClipPlane = screenshotInfo.CameraFarClipPlane;
+            mainCameraObj.transform.position = screenShotInfo.CameraPosition;
+            mainCameraObj.transform.eulerAngles = screenShotInfo.CameraEulerAngles;
+            mainCamera.fieldOfView = screenShotInfo.CameraFieldOfView;
+            mainCamera.nearClipPlane = screenShotInfo.CameraNearClipPlane;
+            mainCamera.farClipPlane = screenShotInfo.CameraFarClipPlane;
 
             // 写入Shader/Material信息
-            var material = screenshotInfo.Renderers[0].sharedMaterial;
-            var materialName = material.name;
-            var shaderName = material.shader.name;
+            var material = screenShotInfo.Renderers[0].sharedMaterial;
+            string materialName = material.name;
+            string shaderName = material.shader.name;
 
             var canvas = GameObject.Find("Canvas");
             var shaderNameText = canvas.FindComponent<Text>("ShaderName");
@@ -199,44 +188,45 @@ namespace Gempoll.Plugins.Rendering.Editor
             materialNameText.text = materialName;
         }
 
-        private ScreenshotData GetScreenshotData()
+        private ScreenShotData GetScreenShotData()
         {
-            if (cachedScreenshotData)
-                return cachedScreenshotData;
-            cachedScreenshotData = Object.FindObjectOfType<ScreenshotData>();
-            return cachedScreenshotData;
+            if (cachedScreenShotData)
+                return cachedScreenShotData;
+
+            cachedScreenShotData = Object.FindObjectOfType<ScreenShotData>();
+            return cachedScreenShotData;
         }
 
         private IEnumerator RecaptureAll()
         {
             var mainCameraObj = GameObject.Find("Main Camera");
             var mainCamera = mainCameraObj.GetComponent<Camera>();
-            var screenshotData = GetScreenshotData();
+            var screenShotData = GetScreenShotData();
             var renderers = Object.FindObjectsOfType<Renderer>();
 
-            int count = screenshotData.ScreenshotInfos.Count;
+            int count = screenShotData.ScreenShotInfos.Count;
             for (int i = 0; i < count; i++)
             {
-                EditorUtility.DisplayProgressBar("重拍所有", string.Format("{0}/{1}", i, count), (float)i / count);
-                var screenshotInfo = screenshotData.ScreenshotInfos[i];
+                EditorUtility.DisplayProgressBar("重拍所有", $"{i}/{count}", (float) i / count);
+                var screenShotInfo = screenShotData.ScreenShotInfos[i];
 
                 // 只显示选中部分
                 foreach (var renderer in renderers)
-                    renderer.enabled = screenshotInfo.Renderers.Contains(renderer);
+                    renderer.enabled = screenShotInfo.Renderers.Contains(renderer);
 
                 // 位置与旋转
-                mainCameraObj.transform.position = screenshotInfo.CameraPosition;
-                mainCameraObj.transform.eulerAngles = screenshotInfo.CameraEulerAngles;
+                mainCameraObj.transform.position = screenShotInfo.CameraPosition;
+                mainCameraObj.transform.eulerAngles = screenShotInfo.CameraEulerAngles;
 
                 // 参数
-                mainCamera.fieldOfView = screenshotInfo.CameraFieldOfView;
-                mainCamera.nearClipPlane = screenshotInfo.CameraNearClipPlane;
-                mainCamera.farClipPlane = screenshotInfo.CameraFarClipPlane;
+                mainCamera.fieldOfView = screenShotInfo.CameraFieldOfView;
+                mainCamera.nearClipPlane = screenShotInfo.CameraNearClipPlane;
+                mainCamera.farClipPlane = screenShotInfo.CameraFarClipPlane;
 
                 // 写入Shader/Material信息
-                var material = screenshotInfo.Renderers[0].sharedMaterial;
-                var materialName = material.name;
-                var shaderName = material.shader.name;
+                var material = screenShotInfo.Renderers[0].sharedMaterial;
+                string materialName = material.name;
+                string shaderName = material.shader.name;
 
                 var canvas = GameObject.Find("Canvas");
                 var shaderNameText = canvas.FindComponent<Text>("ShaderName");
@@ -245,13 +235,11 @@ namespace Gempoll.Plugins.Rendering.Editor
                 materialNameText.text = materialName;
 
                 // 截屏
-                string directory = string.Format("Screenshot/{0}/{1}",
-                    EditorUserBuildSettings.activeBuildTarget,
-                    screenshotData.Name);
+                string directory = $"ScreenShot/{EditorUserBuildSettings.activeBuildTarget}/{screenShotData.Name}";
                 if (!Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
 
-                string path = Path.Combine(directory, string.Format("screenshot_{0:D3}.png", i + 1));
+                string path = Path.Combine(directory, $"screenShot_{i + 1:D3}.png");
                 ScreenCapture.CaptureScreenshot(path);
 
                 yield return null;
@@ -259,17 +247,16 @@ namespace Gempoll.Plugins.Rendering.Editor
             EditorUtility.ClearProgressBar();
         }
 
-
-        [MenuItem(MenuName)]
-        private static void ToggleAction()
+        [MenuItem(menuName)]
+        public static void ToggleAction()
         {
             PerformAction(!instance.enabled);
         }
 
         private static void PerformAction(bool enabled)
         {
-            Menu.SetChecked(MenuName, enabled);
-            EditorPrefs.SetBool(MenuName, enabled);
+            Menu.SetChecked(menuName, enabled);
+            EditorPrefs.SetBool(menuName, enabled);
             instance.enabled = enabled;
         }
     }

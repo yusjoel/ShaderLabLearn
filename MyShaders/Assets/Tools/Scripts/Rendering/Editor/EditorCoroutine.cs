@@ -1,45 +1,46 @@
 ﻿using System.Collections;
 using UnityEditor;
 
-namespace Gempoll.Plugins.Rendering.Editor
+namespace Tools.Rendering.Editor
 {
     public class EditorCoroutine
     {
         private readonly IEnumerator routine;
 
-        private EditorCoroutine(IEnumerator _routine)
+        private EditorCoroutine(IEnumerator routine)
         {
-            routine = _routine;
+            this.routine = routine;
         }
 
-        public static EditorCoroutine start(IEnumerator _routine)
+        public static EditorCoroutine Start(IEnumerator routine)
         {
-            var coroutine = new EditorCoroutine(_routine);
-            coroutine.start();
+            var coroutine = new EditorCoroutine(routine);
+            coroutine.Start();
             return coroutine;
         }
 
-        private void start()
+        private void Start()
         {
-            //Debug.Log("start");
-            EditorApplication.update += update;
+            //Debug.Log("Start");
+            EditorApplication.update += Update;
         }
 
-        public void stop()
+        public void Stop()
         {
-            //Debug.Log("stop");
-            EditorApplication.update -= update;
+            //Debug.Log("Stop");
+            // ReSharper disable once DelegateSubtraction
+            EditorApplication.update -= Update;
         }
 
-        private void update()
+        private void Update()
         {
             /* NOTE: no need to try/catch MoveNext,
              * if an IEnumerator throws its next iteration returns false.
              * Also, Unity probably catches when calling EditorApplication.update.
              */
 
-            //Debug.Log("update");
-            if (!routine.MoveNext()) stop();
+            //Debug.Log("Update");
+            if (!routine.MoveNext()) Stop();
         }
     }
 }

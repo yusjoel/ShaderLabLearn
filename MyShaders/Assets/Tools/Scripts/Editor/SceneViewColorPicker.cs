@@ -11,7 +11,8 @@ namespace Tools.Editor
     /// </summary>
     public class SceneViewColorPicker
     {
-        private const string MenuName = "Tools/Color Picker";
+        private const string menuName = "Tools/Color Picker";
+
         private static SceneViewColorPicker instance;
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Tools.Editor
         /// <summary>
         ///     SceneView截屏贴图
         /// </summary>
-        private Texture2D screenshotTexture;
+        private Texture2D screenShotTexture;
 
         private SceneViewColorPicker()
         {
@@ -65,13 +66,13 @@ namespace Tools.Editor
             // https://answers.unity.com/questions/775869/editor-how-to-add-checkmarks-to-menuitems.html
             EditorApplication.delayCall += () =>
             {
-                bool savedEnabled = EditorPrefs.GetBool(MenuName, false);
+                bool savedEnabled = EditorPrefs.GetBool(menuName, false);
                 PerformAction(savedEnabled);
             };
         }
 
         [InitializeOnLoadMethod]
-        private static void Initialize()
+        public static void Initialize()
         {
             // 编辑器载入时运行
             if (instance != null)
@@ -81,11 +82,11 @@ namespace Tools.Editor
 
             // 注册OnSceneGUI
             // https://answers.unity.com/questions/768175/add-gui-elements-to-scene-view.html
-            SceneView.onSceneGUIDelegate += instance.OnScene;
+            SceneView.duringSceneGui += instance.OnScene;
         }
 
-        [MenuItem(MenuName)]
-        private static void ToggleAction()
+        [MenuItem(menuName)]
+        public static void ToggleAction()
         {
             // 菜单点击后开启/关闭拾色器
             PerformAction(!instance.enabled);
@@ -93,8 +94,8 @@ namespace Tools.Editor
 
         private static void PerformAction(bool enabled)
         {
-            Menu.SetChecked(MenuName, enabled);
-            EditorPrefs.SetBool(MenuName, enabled);
+            Menu.SetChecked(menuName, enabled);
+            EditorPrefs.SetBool(menuName, enabled);
             instance.enabled = enabled;
         }
 
@@ -103,7 +104,7 @@ namespace Tools.Editor
         /// </summary>
         /// <param name="sceneView"></param>
         /// <param name="mousePosition"></param>
-        public void TryCaptureScreenshot(SceneView sceneView, Vector2 mousePosition)
+        public void TryCaptureScreenShot(SceneView sceneView, Vector2 mousePosition)
         {
             // https://forum.unity.com/threads/mouse-position-in-scene-view.250399/#post-3760579
             // https://answers.unity.com/questions/63361/how-to-find-out-the-real-viewportscreen-size-in-sc.html
@@ -125,11 +126,11 @@ namespace Tools.Editor
             // 获取的截图不包含头部, 但是和上面计算的值差一个像素
             Capture(viewportWidth, viewportHeight, "d:\\Viewport.png");
             // 只能获取GameView的截图
-#if UNITY_2017_1_OR_NEWER
-            ScreenCapture.CaptureScreenshot("d:\\Screenshot.png");
-#else
+        #if UNITY_2017_1_OR_NEWER
+            ScreenCapture.CaptureScreenshot("d:\\ScreenShot.png");
+        #else
             Application.CaptureScreenshot("d:\\Screenshot.png");
-#endif
+        #endif
         }
 
         /// <summary>
@@ -174,7 +175,7 @@ namespace Tools.Editor
             GUI.Label(new Rect(130, 180, 100, 20), "W: " + Math.Round((pickedColor.a - 0.5f) * 2, 4));
 
             continuouslyPick = GUI.Toggle(new Rect(10, 200, 200, 20), continuouslyPick, " 连续拾取? (会卡顿)");
-            enabled = GUI.Toggle(new Rect(10, 220, 220, 20), enabled, " 开启 (菜单: " + MenuName + ")");
+            enabled = GUI.Toggle(new Rect(10, 220, 220, 20), enabled, " 开启 (菜单: " + menuName + ")");
             if (!enabled)
                 PerformAction(false);
 
@@ -182,7 +183,7 @@ namespace Tools.Editor
         }
 
         /// <summary>
-        ///     拾取鼠标位置的像素颜色, <see cref="TryCaptureScreenshot" />
+        ///     拾取鼠标位置的像素颜色, <see cref="TryCaptureScreenShot" />
         /// </summary>
         /// <param name="sceneView"></param>
         /// <param name="mousePosition"></param>
@@ -197,7 +198,7 @@ namespace Tools.Editor
             // 鼠标位置的原点在左上角, 贴图在左下角
             pickedX = (int) mousePosition.x;
             pickedY = viewportHeight - (int) mousePosition.y;
-            pickedColor = screenshotTexture.GetPixel(pickedX, pickedY);
+            pickedColor = screenShotTexture.GetPixel(pickedX, pickedY);
         }
 
         /// <summary>
@@ -209,13 +210,13 @@ namespace Tools.Editor
         private void Capture(int sceneViewWidth, int sceneViewHeight, string filename)
         {
             // 截取当前RenderTarget
-            screenshotTexture = new Texture2D(sceneViewWidth, sceneViewHeight);
-            screenshotTexture.ReadPixels(new Rect(0, 0, sceneViewWidth, sceneViewHeight), 0, 0);
-            screenshotTexture.Apply();
+            screenShotTexture = new Texture2D(sceneViewWidth, sceneViewHeight);
+            screenShotTexture.ReadPixels(new Rect(0, 0, sceneViewWidth, sceneViewHeight), 0, 0);
+            screenShotTexture.Apply();
 
             if (!string.IsNullOrEmpty(filename))
             {
-                var bytes = screenshotTexture.EncodeToPNG();
+                var bytes = screenShotTexture.EncodeToPNG();
                 File.WriteAllBytes(filename, bytes);
             }
         }
@@ -258,7 +259,7 @@ namespace Tools.Editor
             for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
             {
-                if (screenshotTexture == null)
+                if (screenShotTexture == null)
                 {
                     pickTexture.SetPixel(i, j, Color.black);
                     continue;
@@ -267,11 +268,12 @@ namespace Tools.Editor
                 int x = i + pickedX - halfWidth;
                 int y = j + pickedY - halfHeight;
                 // 超出屏幕范围显示黑色
-                bool outRange = x < 0 || x >= screenshotTexture.width || y < 0 || y >= screenshotTexture.height;
-                var color = outRange ? Color.black : screenshotTexture.GetPixel(x, y);
+                bool outRange = x < 0 || x >= screenShotTexture.width || y < 0 || y >= screenShotTexture.height;
+                var color = outRange ? Color.black : screenShotTexture.GetPixel(x, y);
                 // 白色十字准星
-                bool crosshair = i == halfWidth && Mathf.Abs(j - halfHeight) < 5 || j == halfHeight && Mathf.Abs(i - halfWidth) < 5;
-                if (crosshair)
+                bool crossHair = i == halfWidth && Mathf.Abs(j - halfHeight) < 5 ||
+                    j == halfHeight && Mathf.Abs(i - halfWidth) < 5;
+                if (crossHair)
                     color = Color.white;
 
                 pickTexture.SetPixel(i, j, color);
