@@ -4,6 +4,7 @@
 * 如下图, 分别是无效果, 使用了凹凸贴图, 使用凹凸贴图和视差贴图的效果
   
 ![视差贴图的效果](./parallax-map/01.jpg)
+
 图片来自: Unity Manuel - [Heightmap](https://docs.unity3d.com/Manual/StandardShaderMaterialParameterHeightMap.html)
 
 # 基本原理
@@ -31,9 +32,11 @@
 ![正常的高度图](./parallax-map/03.png)
    * 当高度变化很大时, 如下图, 此时H(A)和H(B)相差过大就会出现问题
 ![变化很大的高度图](parallax-map/04.png)
-   * 主要思想是多次对高度图进行采样, 找到交点的两端, 然后进行插值, 这是一个很费的操作, 这里不做展开
-![4次采样](./parallax-map/05.jpg)
+   * 主要思想是多次对高度图进行采样, 来逼近H(B)
+![陡峭视差映射](./parallax-map/05.jpg)
+
 图片来自: Jim's GameDev Blog - [视差贴图（Parallax Mapping）](https://chengkehan.github.io/ParallaxMapping.html)
+   * 不管选择交点的左侧还是右侧高度, 都会造成分层的情况, 采样次数越少, 分层越明显, 一个优化是对左右采样的高度值进行插值, 这个技术叫做: 视差遮蔽映射(Parallax Occlusion Mapping)
 
 # 参考
 * [Heightmap](https://docs.unity3d.com/Manual/StandardShaderMaterialParameterHeightMap.html), Unity Manuel
