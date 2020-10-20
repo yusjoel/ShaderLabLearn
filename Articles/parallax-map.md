@@ -20,7 +20,7 @@
 
    * 此时只需要将U沿X方向移动(Vx / Vz) · h即可
    * 同理, V沿Y方向移动(Vy / Vz) · h
-   * h由视差贴图(高度贴图)提供, 0~1的值要先映射为-0.5~0.5, 代表凹凸的程度
+   * h由视差贴图(高度贴图)提供, 0\~1的值要先映射为-0.5\~0.5, 代表凹凸的程度
    * 另外使用一个缩放值来控制高度
 3. 偏移量限制(Offset Limit)
    * 视角接近平行于表面时, 此时Vz将趋于0, Vx / Vz将趋于无穷大
@@ -44,3 +44,4 @@
 * [视差贴图（Parallax Mapping）](https://chengkehan.github.io/ParallaxMapping.html), Jim's GameDev Blog
 * [视差贴图](https://learnopengl-cn.github.io/05%20Advanced%20Lighting/05%20Parallax%20Mapping/), [LearnOpenGL](https://learnopengl.com/), [LearnOpenGL中文化工程](https://github.com/LearnOpenGL-CN/LearnOpenGL-CN)
 * [视差贴图（Parallax Mapping）](https://blog.csdn.net/happykocola/article/details/72812081), HappyKocola
+* 图片使用[GeoGebra](https://www.geogebra.org/)制作
