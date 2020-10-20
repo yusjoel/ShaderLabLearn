@@ -3,11 +3,12 @@
 * 大多数的全景图(Panorama)都是使用了球面映射
 * 球面映射使用的投影方式叫做等量矩形投影([Equirectangular project](https://mathworld.wolfram.com/EquirectangularProjection.html)), 缩写为ERP
 * 等量矩形投影是一个特殊的等距圆柱投影([Cylindrical Equidistant Projection](https://mathworld.wolfram.com/CylindricalEquidistantProjection.html)), 等距圆柱投影定义如下
-   * $x=(λ −λ_0)cos⁡φ_1$
-   * $y=φ$
-   * 球面上：λ是经线，φ是纬线，φ1 是标准纬线，λ0是中心子午线 
+   * x=(λ −λ<sub>0</sub>)cos⁡φ<sub>1</sub>
+   * y=φ
+   * 球面上：λ是经线，φ是纬线，φ<sub>1</sub> 是标准纬线，λ<sub>0</sub>是中心子午线 
    * 平面上：x是水平坐标，y为垂直坐标。
-   * $φ1 = 0$ 时, 就是等量矩形投影
+   * φ<sub>1</sub> = 0 时, 就是等量矩形投影  
+   ![经纬线](sphere-map/sphere.jpg)
 * 从公式中可以看到
    * x的范围在[0, 2π], 整体是2π
    * y的范围在[-π/2, π/2], 整体是π
